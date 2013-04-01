@@ -19,4 +19,12 @@ public enum Stone
     {
         return this == BLACK;
     }
+
+    public void requireEquals(Stone target)
+    {
+        if (!this.equals(target))
+        {
+            throw new IllegalStateException("Illegal Stone: required " + target);
+        }
+    }
 }

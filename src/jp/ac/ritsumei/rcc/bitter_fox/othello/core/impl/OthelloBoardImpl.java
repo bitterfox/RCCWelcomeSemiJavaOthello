@@ -9,7 +9,6 @@ import jp.ac.ritsumei.rcc.bitter_fox.othello.util.*;
 public class OthelloBoardImpl implements OthelloBoard
 {
     private final Stone[][] board = new Stone[HEIGHT][WIDTH];
-    private Hand lastHand = null;
 
     public OthelloBoardImpl()
     {
@@ -53,8 +52,6 @@ public class OthelloBoardImpl implements OthelloBoard
     public void putStone(Hand hand)
     {
         Objects.requireNonNull(hand);
-
-        lastHand = hand;
 
         if (!hand.isPass())
         {
@@ -161,11 +158,6 @@ public class OthelloBoardImpl implements OthelloBoard
             }
             return false;
         }
-    }
-
-    public Hand getLastHand()
-    {
-        return lastHand;
     }
 
     public boolean isPutable(Stone stone, At at)

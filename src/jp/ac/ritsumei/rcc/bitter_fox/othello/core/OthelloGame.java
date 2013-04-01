@@ -4,8 +4,15 @@ package jp.ac.ritsumei.rcc.bitter_fox.othello.core;
 public interface OthelloGame
 {
     OthelloBoard getOthelloBoard();
+    void setPlayer(Player player);
+    Stone getNextStone();
     Player getNextPlayer();
     Player[] getPlayers();
-    Judger getJudger();
-    boolean continueable();
+    boolean next();
+    Hand getLastHand();
+    boolean isGameOvered();
+    Result getResult();
+
+    void addGameListener(GameListener listener);
+    void removeGameListener(GameListener listener);
 }

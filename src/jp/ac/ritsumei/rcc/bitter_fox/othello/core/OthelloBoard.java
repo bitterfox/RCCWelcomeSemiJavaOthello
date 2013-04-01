@@ -11,8 +11,6 @@ public interface OthelloBoard
 
     void putStone(Hand hand);
 
-    Hand getLastHand();
-
     boolean isPutable(Stone stone, At at);
     boolean isPutable(Stone stone, int x, int y); // TODO: default
 
