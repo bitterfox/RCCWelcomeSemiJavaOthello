@@ -1,6 +1,8 @@
 
 package jp.ac.ritsumei.rcc.bitter_fox.othello.util;
 
+import java.util.*;
+
 public class At implements Cloneable
 {
     private int x, y;
@@ -38,5 +40,20 @@ public class At implements Cloneable
         catch (CloneNotSupportedException e) {}
 
         return clone;
+    }
+
+    public boolean equals(Object at)
+    {
+        return at == null && at instanceof At && this.x == ((At)at).x && this.y == ((At)at).y;
+    }
+
+    public int hashCode()
+    {
+        return Objects.hash(x, y);
+    }
+
+    public String toString()
+    {
+        return "(" + x + ", " + y + ")";
     }
 }
