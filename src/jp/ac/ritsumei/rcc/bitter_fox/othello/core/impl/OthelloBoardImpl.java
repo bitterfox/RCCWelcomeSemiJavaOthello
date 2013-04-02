@@ -57,8 +57,7 @@ public class OthelloBoardImpl implements OthelloBoard
         {
             this.checkPutable(hand.getStone(), hand.getAt());
 
-            // TODO
-            Reverser reverser = ReverserImpl.getInstance(); // TODO
+            Reverser reverser = ReverserImpl.getInstance();
             for (LineType type : LineType.values())
             {
                 reverser.reverseWithNext(this.getLine(type, hand.getAt()), hand.getStone());
@@ -76,96 +75,12 @@ public class OthelloBoardImpl implements OthelloBoard
         }
     }
 
-    // TODO: 移動させる
-    private static class ReverserImpl implements Reverser
-    {
-        private static final Reverser instance = new ReverserImpl();
-
-        private ReverserImpl()
-        {
-        }
-
-        private static Reverser getInstance()
-        {
-            return instance;
-        }
-
-        public void reverseWithNext(Line line, Stone stone)
-        {
-            if (isReverseableWithNext(line, stone))
-            {
-                int i = 0;
-                while (line.hasNext())
-                {
-                    line.next();i++;
-                    if (line.getStone() == stone)
-                    {
-                        break;
-                    }
-                    line.reverse();
-                }
-
-                while (i-- > 0)
-                {
-                    line.back();
-                }
-            }
-        }
-
-        public boolean isReverseableWithNext(Line line, Stone stone)
-        {
-            int i = 0;
-
-            if (!line.hasNext())
-            {
-                return false;
-            }
-
-            line.next(); i++;
-            if (line.getStone() != stone.reverse())
-            {
-                while (i-- > 0)
-                {
-                    line.back();
-                }
-                return false;
-            }
-
-            while (line.hasNext())
-            {
-                line.next(); i++;
-                if (line.getStone() == stone)
-                {
-                    while (i-- > 0)
-                    {
-                        line.back();
-                    }
-                    return true;
-                }
-                else if (line.getStone() == null)
-                {
-                    while (i-- > 0)
-                    {
-                        line.back();
-                    }
-                    return false;
-                }
-            }
-
-            while(i-- > 0)
-            {
-                line.back();
-            }
-            return false;
-        }
-    }
-
     public boolean isPutable(Stone stone, At at)
     {
         Objects.requireNonNull(stone);
         this.checkAt(at);
 
-        Reverser reverser = ReverserImpl.getInstance(); // TODO
+        Reverser reverser = ReverserImpl.getInstance();
 
         for (LineType type : LineType.values())
         {
@@ -249,45 +164,6 @@ public class OthelloBoardImpl implements OthelloBoard
         return sum;
     }
 
-    // TODO
-    private static interface Mover
-    {
-        int nextX(int x);
-        int nextY(int y);
-        int backX(int x);
-        int backY(int y);
-    }
-
-    private static class MoverImpl implements Mover
-    {
-        int diffNextX, diffNextY;
-
-        public MoverImpl(int diffNextX, int diffNextY)
-        {
-            this.diffNextX = diffNextX;
-            this.diffNextY = diffNextY;
-        }
-
-        public int nextX(int x) {return x + diffNextX;}
-        public int nextY(int y) {return y + diffNextY;}
-        public int backX(int x) {return x - diffNextX;}
-        public int backY(int y) {return y - diffNextY;}
-    }
-
-    private static final Map<LineType, Mover> movers = new EnumMap<>(LineType.class);
-
-    static
-    {
-        movers.put(LineType.UP,         new MoverImpl(0,  -1));
-        movers.put(LineType.DOWN,       new MoverImpl(0,  1));
-        movers.put(LineType.LEFT,       new MoverImpl(-1, 0));
-        movers.put(LineType.RIGHT,      new MoverImpl(1,  0));
-        movers.put(LineType.BLACK_UP,   new MoverImpl(1,  -1));
-        movers.put(LineType.BLACK_DOWN, new MoverImpl(-1, 1));
-        movers.put(LineType.WHITE_UP,   new MoverImpl(-1, -1));
-        movers.put(LineType.WHITE_DOWN, new MoverImpl(1,  1));
-    }
-
     private class LineImpl implements Line
     {
         private LineType type;
@@ -302,7 +178,7 @@ public class OthelloBoardImpl implements OthelloBoard
             this.type = type;
             x = at.getX();
             y = at.getY();
-            this.mover = movers.get(type);
+            this.mover = Movers.getMover(type);
         }
 
         public LineType getType()
