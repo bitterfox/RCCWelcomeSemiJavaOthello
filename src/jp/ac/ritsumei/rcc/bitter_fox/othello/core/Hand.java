@@ -1,6 +1,8 @@
 
 package jp.ac.ritsumei.rcc.bitter_fox.othello.core;
 
+import java.util.*;
+
 import jp.ac.ritsumei.rcc.bitter_fox.othello.util.*;
 
 public class Hand
@@ -11,6 +13,9 @@ public class Hand
 
     public Hand(Stone stone, At at)
     {
+        Objects.requireNonNull(stone);
+        Objects.requireNonNull(at);
+
         this.stone = stone;
         this.pass = false;
         this.at = at;
@@ -40,5 +45,38 @@ public class Hand
     public At getAt()
     {
         return at;
+    }
+
+    public String toString()
+    {
+        return pass ? "PASS" : stone.toString() + at.toString();
+    }
+
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+
+        Hand hand = null;
+
+        if (obj == null || !(obj instanceof Hand))
+        {
+            return false;
+        }
+
+        hand = (Hand)obj;
+        if (pass == hand.pass && stone == hand.stone)
+        {
+            return true;
+        }
+
+        return stone == hand.stone && at.equals(hand.at);
+    }
+
+    public int hashCode()
+    {
+        return pass ? Objects.hash(pass, stone) : Objects.hash(pass, stone, at);
     }
 }
