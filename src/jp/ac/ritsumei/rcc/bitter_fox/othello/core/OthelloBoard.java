@@ -3,7 +3,7 @@ package jp.ac.ritsumei.rcc.bitter_fox.othello.core;
 
 import jp.ac.ritsumei.rcc.bitter_fox.othello.util.*;
 
-public interface OthelloBoard
+public interface OthelloBoard extends Othelloable
 {
     int WIDTH = 8, HEIGHT = 8;
 

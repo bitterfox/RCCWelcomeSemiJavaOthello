@@ -14,6 +14,7 @@ public class OthelloGameImpl implements OthelloGame
     private Hand lastHand;
     private boolean gameOvered = false;
     private List<GameListener> gameListeners = new LinkedList<>();
+    private OthelloSystem system;
 
     public OthelloGameImpl(OthelloBoard board, Player black, Player white)
     {
@@ -163,5 +164,12 @@ public class OthelloGameImpl implements OthelloGame
         {
             listener.gameOvered(this);
         }
+    }
+
+    public void setOthelloSystem(OthelloSystem system)
+    {
+        Objects.requireNonNull(system);
+
+        this.system = system;
     }
 }
