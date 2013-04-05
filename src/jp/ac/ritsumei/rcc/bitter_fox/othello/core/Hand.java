@@ -7,76 +7,76 @@ import jp.ac.ritsumei.rcc.bitter_fox.othello.util.*;
 
 public class Hand
 {
-    private Stone stone;
-    private boolean pass;
-    private At at;
+	private Stone stone;
+	private boolean pass;
+	private At at;
 
-    public Hand(Stone stone, At at)
-    {
-        Objects.requireNonNull(stone);
-        Objects.requireNonNull(at);
+	public Hand(Stone stone, At at)
+	{
+		Objects.requireNonNull(stone);
+		Objects.requireNonNull(at);
 
-        this.stone = stone;
-        this.pass = false;
-        this.at = at;
-    }
+		this.stone = stone;
+		this.pass = false;
+		this.at = at;
+	}
 
-    private Hand(Stone stone)
-    {
-        this.stone = stone;
-        this.pass = true;
-    }
+	private Hand(Stone stone)
+	{
+		this.stone = stone;
+		this.pass = true;
+	}
 
-    public static Hand createPassHand(Stone stone)
-    {
-        return new Hand(stone);
-    }
+	public static Hand createPassHand(Stone stone)
+	{
+		return new Hand(stone);
+	}
 
-    public Stone getStone()
-    {
-        return stone;
-    }
+	public Stone getStone()
+	{
+		return stone;
+	}
 
-    public boolean isPass()
-    {
-        return pass;
-    }
+	public boolean isPass()
+	{
+		return pass;
+	}
 
-    public At getAt()
-    {
-        return at;
-    }
+	public At getAt()
+	{
+		return at;
+	}
 
-    public String toString()
-    {
-        return pass ? "PASS" : stone.toString() + at.toString();
-    }
+	public String toString()
+	{
+		return pass ? "PASS" : stone.toString() + at.toString();
+	}
 
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
 
-        Hand hand = null;
+		Hand hand = null;
 
-        if (obj == null || !(obj instanceof Hand))
-        {
-            return false;
-        }
+		if (obj == null || !(obj instanceof Hand))
+		{
+			return false;
+		}
 
-        hand = (Hand)obj;
-        if (pass == hand.pass && stone == hand.stone)
-        {
-            return true;
-        }
+		hand = (Hand)obj;
+		if (pass == hand.pass && stone == hand.stone)
+		{
+			return true;
+		}
 
-        return stone == hand.stone && at.equals(hand.at);
-    }
+		return stone == hand.stone && at.equals(hand.at);
+	}
 
-    public int hashCode()
-    {
-        return pass ? Objects.hash(pass, stone) : Objects.hash(pass, stone, at);
-    }
+	public int hashCode()
+	{
+		return pass ? Objects.hash(pass, stone) : Objects.hash(pass, stone, at);
+	}
 }

@@ -5,38 +5,38 @@ import jp.ac.ritsumei.rcc.bitter_fox.othello.core.*;
 
 public class OthelloSystemImpl implements OthelloSystem
 {
-    private static final OthelloSystemImpl instance = new OthelloSystemImpl();
+	private static final OthelloSystemImpl instance = new OthelloSystemImpl();
 
-    private OthelloSystemImpl()
-    {
-    }
+	private OthelloSystemImpl()
+	{
+	}
 
-    public static OthelloSystemImpl getInstance()
-    {
-        return instance;
-    }
+	public static OthelloSystemImpl getInstance()
+	{
+		return instance;
+	}
 
-    public OthelloGame createOthelloGame(Player black, Player white)
-    {
-        return new OthelloGameImpl(this.createOthelloBoard(), black, white);
-    }
+	public OthelloGame createOthelloGame(Player black, Player white)
+	{
+		return new OthelloGameImpl(this.createOthelloBoard(), black, white);
+	}
 
-    public OthelloBoard createOthelloBoard()
-    {
-        OthelloBoard board = new OthelloBoardImpl();
+	public OthelloBoard createOthelloBoard()
+	{
+		OthelloBoard board = new OthelloBoardImpl();
 
-        board.initialize();
+		board.initialize();
 
-        return board;
-    }
+		return board;
+	}
 
-    public OthelloBoard createOthelloBoard(Stone[][] board)
-    {
-        return new OthelloBoardImpl(board);
-    }
+	public OthelloBoard createOthelloBoard(Stone[][] board)
+	{
+		return new OthelloBoardImpl(board);
+	}
 
-    public Reverser createReverser()
-    {
-        return ReverserImpl.getInstance();
-    }
+	public Reverser createReverser()
+	{
+		return ReverserImpl.getInstance();
+	}
 }

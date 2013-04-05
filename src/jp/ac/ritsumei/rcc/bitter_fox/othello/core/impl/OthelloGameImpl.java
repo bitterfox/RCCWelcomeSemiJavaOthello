@@ -8,168 +8,168 @@ import jp.ac.ritsumei.rcc.bitter_fox.othello.util.*;
 
 public class OthelloGameImpl implements OthelloGame
 {
-    private OthelloBoard board;
-    private Map<Stone, Player> players = new EnumMap<>(Stone.class);
-    private Stone nextStone = Stone.BLACK;
-    private Hand lastHand;
-    private boolean gameOvered = false;
-    private List<GameListener> gameListeners = new LinkedList<>();
-    private OthelloSystem system;
+	private OthelloBoard board;
+	private Map<Stone, Player> players = new EnumMap<>(Stone.class);
+	private Stone nextStone = Stone.BLACK;
+	private Hand lastHand;
+	private boolean gameOvered = false;
+	private List<GameListener> gameListeners = new LinkedList<>();
+	private OthelloSystem system;
 
-    public OthelloGameImpl(OthelloBoard board, Player black, Player white)
-    {
-        this.board = board;
-        players.put(Stone.BLACK, black);
-        players.put(Stone.WHITE, white);
-    }
+	public OthelloGameImpl(OthelloBoard board, Player black, Player white)
+	{
+		this.board = board;
+		players.put(Stone.BLACK, black);
+		players.put(Stone.WHITE, white);
+	}
 
-    public OthelloBoard getOthelloBoard()
-    {
-        return board;
-    }
+	public OthelloBoard getOthelloBoard()
+	{
+		return board;
+	}
 
-    public void setPlayer(Player player)
-    {
-        Objects.requireNonNull(player);
-        Objects.requireNonNull(player.getStone());
+	public void setPlayer(Player player)
+	{
+		Objects.requireNonNull(player);
+		Objects.requireNonNull(player.getStone());
 
-        players.put(player.getStone(), player);
-    }
+		players.put(player.getStone(), player);
+	}
 
-    public Stone getNextStone()
-    {
-        return nextStone;
-    }
+	public Stone getNextStone()
+	{
+		return nextStone;
+	}
 
-    public Player getNextPlayer()
-    {
-        return players.get(nextStone);
-    }
+	public Player getNextPlayer()
+	{
+		return players.get(nextStone);
+	}
 
-    public Player[] getPlayers()
-    {
-        return players.values().toArray(new Player[0]);
-    }
+	public Player[] getPlayers()
+	{
+		return players.values().toArray(new Player[0]);
+	}
 
-    public boolean next()
-    {
-        this.checkNotGameOvered(); // ゲームオーバでないことをチェック
-        nextStone.requireEquals(this.getNextPlayer().getStone());
+	public boolean next()
+	{
+		this.checkNotGameOvered(); // ゲームオーバでないことをチェック
+		nextStone.requireEquals(this.getNextPlayer().getStone());
 
-        Hand hand = this.getNextPlayer().next(this); // 次の手を作成
+		Hand hand = this.getNextPlayer().next(this); // 次の手を作成
 
-        Objects.requireNonNull(hand); // hand != null
-        nextStone.requireEquals(hand.getStone());
+		Objects.requireNonNull(hand); // hand != null
+		nextStone.requireEquals(hand.getStone());
 
-        this.callBeforeApplyHand();
+		this.callBeforeApplyHand();
 
-        this.lastHand = hand;
+		this.lastHand = hand;
 
-        if (!hand.isPass())
-        {
-            this.checkPutable(hand.getStone(), hand.getAt());
+		if (!hand.isPass())
+		{
+			this.checkPutable(hand.getStone(), hand.getAt());
 
-            board.putStone(hand);
-        }
+			board.putStone(hand);
+		}
 
-        nextStone = nextStone.reverse();
+		nextStone = nextStone.reverse();
 
-        this.callAfterApplyHand();
+		this.callAfterApplyHand();
 
-        // ゲームオーバかを調べる
-        if (board.getPutableAts(Stone.WHITE).length == 0 && board.getPutableAts(Stone.BLACK).length == 0)
-        {
-            gameOvered = true;
-            this.callGameOvered();
-        }
+		// ゲームオーバかを調べる
+		if (board.getPutableAts(Stone.WHITE).length == 0 && board.getPutableAts(Stone.BLACK).length == 0)
+		{
+			gameOvered = true;
+			this.callGameOvered();
+		}
 
-        return !gameOvered;
-    }
+		return !gameOvered;
+	}
 
-    private void checkNotGameOvered()
-    {
-        if (gameOvered)
-        {
-            throw new IllegalStateException("Game overed");
-        }
-    }
+	private void checkNotGameOvered()
+	{
+		if (gameOvered)
+		{
+			throw new IllegalStateException("Game overed");
+		}
+	}
 
-    private void checkPutable(Stone stone, At at)
-    {
-        if (!board.isPutable(stone, at))
-        {
-            throw new IllegalArgumentException("Illegal hand");
-        }
-    }
+	private void checkPutable(Stone stone, At at)
+	{
+		if (!board.isPutable(stone, at))
+		{
+			throw new IllegalArgumentException("Illegal hand");
+		}
+	}
 
-    public Hand getLastHand()
-    {
-        return lastHand;
-    }
+	public Hand getLastHand()
+	{
+		return lastHand;
+	}
 
-    public boolean isGameOvered()
-    {
-        return gameOvered;
-    }
+	public boolean isGameOvered()
+	{
+		return gameOvered;
+	}
 
-    public Result getResult()
-    {
-        int black = board.countStone(Stone.BLACK), white = board.countStone(Stone.WHITE);
+	public Result getResult()
+	{
+		int black = board.countStone(Stone.BLACK), white = board.countStone(Stone.WHITE);
 
-        if (black == white)
-        {
-            return Result.DRAW;
-        }
-        else if (black > white)
-        {
-            return Result.BLACK;
-        }
-        else
-        {
-            return Result.WHITE;
-        }
-    }
+		if (black == white)
+		{
+			return Result.DRAW;
+		}
+		else if (black > white)
+		{
+			return Result.BLACK;
+		}
+		else
+		{
+			return Result.WHITE;
+		}
+	}
 
-    public void addGameListener(GameListener listener)
-    {
-        Objects.requireNonNull(listener);
+	public void addGameListener(GameListener listener)
+	{
+		Objects.requireNonNull(listener);
 
-        gameListeners.add(listener);
-    }
+		gameListeners.add(listener);
+	}
 
-    public void removeGameListener(GameListener listener)
-    {
-        gameListeners.remove(listener);
-    }
+	public void removeGameListener(GameListener listener)
+	{
+		gameListeners.remove(listener);
+	}
 
-    private void callBeforeApplyHand()
-    {
-        for (GameListener listener : gameListeners)
-        {
-            listener.beforeApplyHand(this);
-        }
-    }
+	private void callBeforeApplyHand()
+	{
+		for (GameListener listener : gameListeners)
+		{
+			listener.beforeApplyHand(this);
+		}
+	}
 
-    private void callAfterApplyHand()
-    {
-        for (GameListener listener : gameListeners)
-        {
-            listener.afterApplyHand(this);
-        }
-    }
+	private void callAfterApplyHand()
+	{
+		for (GameListener listener : gameListeners)
+		{
+			listener.afterApplyHand(this);
+		}
+	}
 
-    private void callGameOvered()
-    {
-        for (GameListener listener : gameListeners)
-        {
-            listener.gameOvered(this);
-        }
-    }
+	private void callGameOvered()
+	{
+		for (GameListener listener : gameListeners)
+		{
+			listener.gameOvered(this);
+		}
+	}
 
-    public void setOthelloSystem(OthelloSystem system)
-    {
-        Objects.requireNonNull(system);
+	public void setOthelloSystem(OthelloSystem system)
+	{
+		Objects.requireNonNull(system);
 
-        this.system = system;
-    }
+		this.system = system;
+	}
 }
