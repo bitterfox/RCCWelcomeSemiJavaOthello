@@ -1,7 +1,7 @@
 
 package jp.ac.ritsumei.rcc.bitter_fox.othello.core;
 
-public interface OthelloGame
+public interface OthelloGame extends Othelloable
 {
     OthelloBoard getOthelloBoard();
     void setPlayer(Player player);

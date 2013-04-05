@@ -9,6 +9,7 @@ import jp.ac.ritsumei.rcc.bitter_fox.othello.util.*;
 public class OthelloBoardImpl implements OthelloBoard
 {
     private final Stone[][] board = new Stone[HEIGHT][WIDTH];
+    private OthelloSystem system;
 
     public OthelloBoardImpl()
     {
@@ -57,7 +58,7 @@ public class OthelloBoardImpl implements OthelloBoard
         {
             this.checkPutable(hand.getStone(), hand.getAt());
 
-            Reverser reverser = ReverserImpl.getInstance();
+            Reverser reverser = system.createReverser();
             for (LineType type : LineType.values())
             {
                 reverser.reverseWithNext(this.getLine(type, hand.getAt()), hand.getStone());
@@ -80,7 +81,7 @@ public class OthelloBoardImpl implements OthelloBoard
         Objects.requireNonNull(stone);
         this.checkAt(at);
 
-        Reverser reverser = ReverserImpl.getInstance();
+        Reverser reverser = system.createReverser();
 
         for (LineType type : LineType.values())
         {
@@ -229,6 +230,13 @@ public class OthelloBoardImpl implements OthelloBoard
     public Line getLine(LineType type, At at)
     {
         return new LineImpl(type, at);
+    }
+
+    public void setOthelloSystem(OthelloSystem system)
+    {
+        Objects.requireNonNull(system);
+
+        this.system = system;
     }
 
     public Stone[][] toArray()
