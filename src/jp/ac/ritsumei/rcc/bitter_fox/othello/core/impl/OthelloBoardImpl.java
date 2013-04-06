@@ -200,6 +200,14 @@ public class OthelloBoardImpl implements OthelloBoard
 			return 0 <= nextX && nextX < WIDTH && 0 <= nextY && nextY < HEIGHT;
 		}
 
+		public void skipNext(int n)
+		{
+			while (n-- > 0)
+			{
+				next();
+			}
+		}
+
 		public void back()
 		{
 			x = mover.backX(x);
@@ -211,6 +219,14 @@ public class OthelloBoardImpl implements OthelloBoard
 			int backX = mover.backX(x), backY = mover.backY(y);
 
 			return 0 <= backX && backX < WIDTH && 0 <= backY && backY < HEIGHT;
+		}
+
+		public void skipBack(int n)
+		{
+			while (n-- > 0)
+			{
+				back();
+			}
 		}
 
 		public Stone getStone()

@@ -18,7 +18,7 @@ public class ReverserImpl implements Reverser
 
 	public void reverseWithNext(Line line, Stone stone)
 	{
-		if (isReverseableWithNext(line, stone))
+		if (this.isReverseableWithNext(line, stone))
 		{
 			int i = 0;
 			while (line.hasNext())
@@ -31,10 +31,7 @@ public class ReverserImpl implements Reverser
 				line.reverse();
 			}
 
-			while (i-- > 0)
-			{
-				line.back();
-			}
+			line.skipBack(i);
 		}
 	}
 
@@ -50,10 +47,7 @@ public class ReverserImpl implements Reverser
 		line.next(); i++;
 		if (line.getStone() != stone.reverse())
 		{
-			while (i-- > 0)
-			{
-				line.back();
-			}
+			line.skipBack(i);
 			return false;
 		}
 
@@ -62,26 +56,17 @@ public class ReverserImpl implements Reverser
 			line.next(); i++;
 			if (line.getStone() == stone)
 			{
-				while (i-- > 0)
-				{
-					line.back();
-				}
+				line.skipBack(i);
 				return true;
 			}
 			else if (line.getStone() == null)
 			{
-				while (i-- > 0)
-				{
-					line.back();
-				}
+				line.skipBack(i);
 				return false;
 			}
 		}
 
-		while(i-- > 0)
-		{
-			line.back();
-		}
+		line.skipBack(i);
 		return false;
 	}
 }
