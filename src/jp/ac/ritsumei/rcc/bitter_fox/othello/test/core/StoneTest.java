@@ -73,5 +73,18 @@ public class StoneTest
 			fail("would be an exception");
 		}
 		catch (Exception e) {}
+
+		try
+		{
+			BLACK.requireEquals(null);
+			fail("would be an exception");
+		}
+		catch (Exception e) {}
+		try
+		{
+			WHITE.requireEquals(null);
+			fail("would be an exception");
+		}
+		catch (Exception e) {}
 	}
 }
