@@ -46,6 +46,11 @@ public class OthelloBoardImpl implements OthelloBoard
 
 	public void initialize()
 	{
+		for (int i = 0; i < board.length; i++)
+		{
+			Arrays.fill(board[i], null);
+		}
+
 		board[3][3] = board[4][4] = Stone.WHITE;
 		board[3][4] = board[4][3] = Stone.BLACK;
 	}
