@@ -32,7 +32,7 @@ public class Hand
 		this.pass = true;
 	}
 
-	public static Hand createPassHand(Stone stone)
+	public static Hand getPassHand(Stone stone)
 	{
 		Objects.requireNonNull(stone);
 
