@@ -9,6 +9,8 @@ public class At implements Cloneable
 
 	public At(At at)
 	{
+		Objects.requireNonNull(at);
+
 		this.x = at.x;
 		this.y = at.y;
 	}
@@ -44,7 +46,7 @@ public class At implements Cloneable
 
 	public boolean equals(Object at)
 	{
-		return at == null && at instanceof At && this.x == ((At)at).x && this.y == ((At)at).y;
+		return at != null && at instanceof At && this.x == ((At)at).x && this.y == ((At)at).y;
 	}
 
 	public int hashCode()
