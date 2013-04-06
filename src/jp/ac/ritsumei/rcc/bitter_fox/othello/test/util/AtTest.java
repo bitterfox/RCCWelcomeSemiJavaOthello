@@ -34,7 +34,7 @@ public class AtTest
 			fail("would be NullPointerException");
 		}
 		catch (NullPointerException e) {}
-		catch (Exception e) {fail("wouldn't be Exception not NullPointerException");}
+		catch (Exception e) {fail("wouldn't be Exception but NullPointerException");}
 	}
 
 	@Test
