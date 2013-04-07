@@ -18,7 +18,11 @@ public class OthelloSystemImpl implements OthelloSystem
 
 	public OthelloGame createOthelloGame(Player black, Player white)
 	{
-		return new OthelloGameImpl(this.createOthelloBoard(), black, white);
+		OthelloGame game = new OthelloGameImpl(this.createOthelloBoard(), black, white);
+
+		game.setOthelloSystem(this);
+
+		return game;
 	}
 
 	public OthelloBoard createOthelloBoard()
@@ -27,12 +31,18 @@ public class OthelloSystemImpl implements OthelloSystem
 
 		board.initialize();
 
+		board.setOthelloSystem(this);
+
 		return board;
 	}
 
-	public OthelloBoard createOthelloBoard(Stone[][] board)
+	public OthelloBoard createOthelloBoard(Stone[][] stones)
 	{
-		return new OthelloBoardImpl(board);
+		OthelloBoard board = new OthelloBoardImpl(stones);
+
+		board.setOthelloSystem(this);
+
+		return board;
 	}
 
 	public Reverser createReverser()
