@@ -173,7 +173,8 @@ public class OthelloBoardImpl implements OthelloBoard
 	private class LineImpl implements Line
 	{
 		private LineType type;
-		private int x, y;
+		private int curX, curY;
+		private int lastX = -1, lastY = -1;
 		private Mover mover;
 
 		private LineImpl(LineType type, At at)
@@ -182,8 +183,8 @@ public class OthelloBoardImpl implements OthelloBoard
 			Objects.requireNonNull(at);
 
 			this.type = type;
-			x = at.getX();
-			y = at.getY();
+			curX = at.getX();
+			curY = at.getY();
 			this.mover = Movers.getMover(type);
 		}
 
@@ -192,17 +193,21 @@ public class OthelloBoardImpl implements OthelloBoard
 			return type;
 		}
 
-		public void next()
+		public Stone next()
 		{
-			x = mover.nextX(x);
-			y = mover.nextY(y);
+			Stone stone = board[curY][curX];
+
+			lastX = curX;
+			lastY = curY;
+			curX = mover.nextX(curX);
+			curY = mover.nextY(curY);
+
+			return stone;
 		}
 
 		public boolean hasNext()
 		{
-			int nextX = mover.nextX(x), nextY = mover.nextY(y);
-
-			return 0 <= nextX && nextX < WIDTH && 0 <= nextY && nextY < HEIGHT;
+			return 0 <= curX && curX < WIDTH && 0 <= curY && curY < HEIGHT;
 		}
 
 		public void skipNext(int n)
@@ -213,15 +218,19 @@ public class OthelloBoardImpl implements OthelloBoard
 			}
 		}
 
-		public void back()
+		public Stone back()
 		{
-			x = mover.backX(x);
-			y = mover.backY(y);
+			curX = mover.backX(curX);
+			curY = mover.backY(curY);
+			lastX = curX;
+			lastY = curY;
+
+			return board[curY][curX];
 		}
 
 		public boolean hasBack()
 		{
-			int backX = mover.backX(x), backY = mover.backY(y);
+			int backX = mover.backX(curX), backY = mover.backY(curY);
 
 			return 0 <= backX && backX < WIDTH && 0 <= backY && backY < HEIGHT;
 		}
@@ -236,15 +245,25 @@ public class OthelloBoardImpl implements OthelloBoard
 
 		public Stone getStone()
 		{
-			return board[y][x];
+			return board[curY][curX];
 		}
 
 		public void reverse()
 		{
-			if (board[y][x] != null)
+			if (lastX == -1 || lastY == -1)
 			{
-				board[y][x] = board[y][x].reverse();
+				throw new IllegalStateException();
 			}
+
+			if (board[lastY][lastX] != null)
+			{
+				board[lastY][lastX] = board[lastY][lastX].reverse();
+			}
+		}
+
+		public At getAt()
+		{
+			return new At(curX, curY);
 		}
 	}
 
